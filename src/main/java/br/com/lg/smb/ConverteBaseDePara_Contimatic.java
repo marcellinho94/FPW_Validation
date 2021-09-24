@@ -14,11 +14,13 @@ public class ConverteBaseDePara_Contimatic {
 	public static void main(String[] args) {
 		try {
 
+			boolean mat = false;
+
 			// Preparando arquivo de retorno
 			criarArquivoDestino();
 			StringBuilder sb = new StringBuilder();
-			sb.append("SET @REFINICIAL = '201801';\n");
-			sb.append("SET @REFFINAL   = '202010';\n\n\n");
+			sb.append("SET @REFINICIAL = '201901';\n");
+			sb.append("SET @REFFINAL   = '202105';\n\n\n");
 
 			// Lendo arquivo de origem
 			File fileArqCompleto = new File(ARQUIVO_ENTRADA);
@@ -57,6 +59,9 @@ public class ConverteBaseDePara_Contimatic {
 				case "14":
 					tabela = "basefer";
 					break;
+				case "16":
+					tabela = "bsrescc";
+					break;
 				}
 
 				// 2� INFO - CAMPO
@@ -77,12 +82,25 @@ public class ConverteBaseDePara_Contimatic {
 				// Script exceto base de f�rias
 				if (!tabela.equals("basefer")) {
 
-					sb.append("SELECT DISTINCT\n");
+					sb.append("SELECT\n");
 					sb.append("	'3' AS QuandoRegistroExistir,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
-					sb.append("	dpmat.ParaCodEmp AS CodigoEmpresa,\n");
+					sb.append("	(SELECT \n");
+					sb.append("		dp.Para_CodEmpresa \n");
+					sb.append("	FROM \n");
+					sb.append("		lg_depara_empresas dp \n");
+					sb.append("	WHERE \n");
+					sb.append("		TRIM(dp.De_Apelido) = TRIM(fic.zSysEmpId)\n");
+					sb.append("	) AS CodigoEmpresa,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
-					sb.append("	dpmat.ParaMatricula AS Matricula,\n");
+					sb.append("	(SELECT\n");
+					sb.append("		CAST(dp.Para_Matricula AS INT)\n");
+					sb.append("	FROM\n");
+					sb.append("		lg_depara_matriculas dp\n");
+					sb.append("	WHERE\n");
+					sb.append("		dp.De_Matricula = fic.Func\n");
+					sb.append("		AND dp.De_CodEmp = fic.zSysEmpId\n");
+					sb.append("	) AS Matricula,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("	'PARA_CODFOLHA' AS CodigoFolha,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
@@ -97,27 +115,49 @@ public class ConverteBaseDePara_Contimatic {
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("	'' AS NParcelaAtual,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
-					sb.append("	REPLACE(CAST(fic.CAMPO AS DECIMAL(18,2)),',','.') AS Valor\n");
+					sb.append("	CAST(fic.CAMPO AS DECIMAL(18,2)) AS Valor\n");
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("FROM\n");
 					sb.append("	TABELA fic\n");
-					sb.append("	INNER JOIN lg_depara_matriculas dpmat ON fic.Func = dpmat.Matricula AND fic.zSysEmpId = dpmat.De_CodEmp\n");
 					sb.append("WHERE\n");
 					sb.append("	fic.CAMPO IS NOT NULL\n");
 					sb.append("	AND fic.CAMPO > 0\n");
-//					sb.append("	AND dpmat.Ignorar = 'N'\n");
-//					sb.append("	AND FIC.Func IN ('1255','2719','4306','4157','122','4448','4318')\n");
 					sb.append("	AND CONCAT(TRIM(fic.Ano), RIGHT(CONCAT('0', fic.Mes), 2)) >= @REFINICIAL\n");
 					sb.append("	AND CONCAT(TRIM(fic.Ano), RIGHT(CONCAT('0', fic.Mes), 2)) <= @REFFINAL\n");
 
+					if (mat) {
+						sb.append("	AND (SELECT\n");
+						sb.append("		CAST(dp.Para_Matricula AS INT)\n");
+						sb.append("	FROM\n");
+						sb.append("		lg_depara_matriculas dp\n");
+						sb.append("	WHERE\n");
+						sb.append("		dp.De_Matricula = fic.Func\n");
+						sb.append("		AND dp.De_CodEmp = fic.zSysEmpId\n");
+						sb.append("	) IN (0300199,0300655,0300882,0301129,0301316,0301388,0301566,0301891,0302442,0500066,0300034,0300934,0301064,0301151,1000052, 1000059, 1000060, 1000043, 1000058)\n");
+					}
+
 				} else {
-					// Script base de f�rias
+
+					// Script base de ferias
 					sb.append("SELECT DISTINCT\n");
 					sb.append("	'3' AS QuandoRegistroExistir,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
-					sb.append("	dpmat.ParaCodEmp AS CodigoEmpresa,\n");
+					sb.append("	(SELECT \n");
+					sb.append("		dp.Para_CodEmpresa \n");
+					sb.append("	FROM \n");
+					sb.append("		lg_depara_empresas dp \n");
+					sb.append("	WHERE \n");
+					sb.append("		TRIM(dp.De_Apelido) = TRIM(fic.zSysEmpId)\n");
+					sb.append("	) AS CodigoEmpresa,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
-					sb.append("	dpmat.ParaMatricula AS Matricula,\n");
+					sb.append("	(SELECT\n");
+					sb.append("		CAST(dp.Para_Matricula AS INT)\n");
+					sb.append("	FROM\n");
+					sb.append("		lg_depara_matriculas dp\n");
+					sb.append("	WHERE\n");
+					sb.append("		dp.De_Matricula = fic.Func\n");
+					sb.append("		AND dp.De_CodEmp = fic.zSysEmpId\n");
+					sb.append("	) AS Matricula,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("	'PARA_CODFOLHA' AS CodigoFolha,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
@@ -142,16 +182,13 @@ public class ConverteBaseDePara_Contimatic {
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("	'' AS NParcelaAtual,\n");
 					sb.append("	/* --------------------------------------------------- */\n");
-					sb.append("	REPLACE(CAST(fic.CAMPO AS DECIMAL(18,2)),',','.') AS Valor\n");
+					sb.append("	CAST(fic.CAMPO AS DECIMAL(18,2)) AS Valor\n");
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("FROM\n");
 					sb.append("	TABELA fic\n");
-					sb.append("	INNER JOIN lg_depara_matriculas dpmat ON fic.Func = dpmat.Matricula AND fic.zSysEmpId = dpmat.De_CodEmp\n");
 					sb.append("WHERE\n");
 					sb.append("	fic.CAMPO IS NOT NULL\n");
 					sb.append("	AND fic.CAMPO > 0\n");
-//					sb.append("	AND dpmat.Ignorar = 'N'\n");
-//					sb.append("	AND FIC.Func IN ('1255','2719','4306','4157','122','4448','4318')\n");
 					sb.append("	AND (SELECT DISTINCT\n");
 					sb.append("		    CASE fic.GozoNumero\n");
 					sb.append("		 	   WHEN 1 THEN CONCAT(LEFT(fer.InicioGozo1, 4), LEFT(RIGHT(fer.InicioGozo1, 5), 2))\n");
@@ -180,6 +217,18 @@ public class ConverteBaseDePara_Contimatic {
 					sb.append("			AND fic.zSysEmpId = fer.zSysEmpId\n");
 					sb.append("			AND fer.InicioGozo1 IS NOT NULL\n");
 					sb.append("		) <= @REFFINAL\n");
+
+					if (mat) {
+						sb.append("	AND (SELECT\n");
+						sb.append("		CAST(dp.Para_Matricula AS INT)\n");
+						sb.append("	FROM\n");
+						sb.append("		lg_depara_matriculas dp\n");
+						sb.append("	WHERE\n");
+						sb.append("		dp.De_Matricula = fic.Func\n");
+						sb.append("		AND dp.De_CodEmp = fic.zSysEmpId\n");
+						sb.append("	) IN (0300199,0300655,0300882,0301129,0301316,0301388,0301566,0301891,0302442,0500066,0300034,0300934,0301064,0301151,1000052, 1000059, 1000060, 1000043,1000058)\n");
+					}
+
 				}
 
 				// -----------------------------------------------------------
