@@ -5,20 +5,43 @@ public enum ConceitoMigracaoEnum {
 	/* ===================================================== */
 	/* ENUMS */
 	/* ===================================================== */
-	EMPRESA(1, "Empresa"), AGENCIA(2, "Agência"), CARGO(3, "Cargo"), CENTRO_DE_CUSTO(4, "Centro de Custo"), SINDICATO(5, "Sindicato"),
-	INSTITUICAO_ENSINO(6, "Instituição de Ensino"), COLABORADOR(7, "Colaborador"), DEPENDENTE(8, "Dependente"),
-	PENSIONISTA(9, "Pensionista"), MOV_CARGOS(10, "Movimentação de Cargo"), MOV_SALARIO(11, "Movimentação de Salário"),
-	MOV_CENTRO_CUSTO(12, "Movimentação de Centro de Custo"), MOV_ESTABELECIMENTO(13, "Movimentação de Estabelecimento"),
-	AFASTAMENTO(14, "Afastamento"), FERIAS(15, "Férias"), RECESSO(16, "Recesso"), ESTABILIDADE(17, "Estabilidade"),
-	APOSENTADORIA(18, "Aposentadoria"), AVISO_PREVIO(19, "Aviso Prévio"), RECLAMATORIA(20, "Reclamatória Trabalhista"),
-	OUTRAS_OCORRENCIAS(21, "Outras Ocorrências"), RESCISAO(22, "Rescisão"), RESCISAO_COMPLEMENTAR(23, "Rescisão Complementar"),
-	FICHA_FINANCEIRA(24, "Ficha Financeira");
+	EMPRESA(1, "Empresa"), 
+	ESTABELECIMENTO(2, "Estabelecimento"), 
+	LOTACAO_TRIBUTARIA(3, "Empresa"), 
+	BANCO(4, "Banco"), 
+	AGENCIA(4, "Agência"), 
+	CARGO(5, "Cargo"), 
+	CENTRO_DE_CUSTO(6, "Centro de Custo"), 
+	SINDICATO(7, "Sindicato"),
+	INSTITUICAO_ENSINO(8, "Instituição de Ensino"), 
+	AGENTE_DE_INTEGRACAO(9, "Agente de Integração"), 
+	COLABORADOR(10, "Colaborador"), 
+	DEPENDENTE(11, "Dependente"), 
+	PENSIONISTA(12, "Pensionista"),
+	MOV_CARGOS(13, "Movimentação de Cargo"), 
+	MOV_SALARIO(14, "Movimentação de Salário"), 
+	MOV_CENTRO_CUSTO(15, "Movimentação de Centro de Custo"),
+	MOV_ESTABELECIMENTO(16, "Movimentação de Estabelecimento"), 
+	MOV_SINDICATO(17, "Movimentação de Sindicato"), 
+	AFASTAMENTO(18, "Afastamento"), 
+	FERIAS(19, "Férias"), 
+	RECESSO(20, "Recesso"),
+	ESTABILIDADE(21, "Estabilidade"), 
+	APOSENTADORIA(22, "Aposentadoria"), 
+	AVISO_PREVIO(23, "Aviso Prévio"), 
+	RECLAMATORIA(24, "Reclamatória Trabalhista"),
+	OUTRAS_OCORRENCIAS(25, "Outras Ocorrências"), 
+	RESCISAO(26, "Rescisão"), 
+	RESCISAO_COMPLEMENTAR(27, "Rescisão Complementar"),
+	MOV_EMPRESA(27, "Movimentação de Empresa"),
+	CALCULO_RETROATIVO(28, "Cálculo Retroativo"),
+	FICHA_FINANCEIRA(29, "Ficha Financeira");
 
 	/* ===================================================== */
 	/* CONSTRUCTOR */
 	/* ===================================================== */
 	ConceitoMigracaoEnum(int id, String description) {
-		this.id = id;
+		this.id = id;	
 		this.description = description;
 	}
 

@@ -25,10 +25,10 @@ public class FPW_Quantitativo {
 	/* ===================================================== */
 	/* Constructor */
 	/* ===================================================== */
-	public FPW_Quantitativo(String database, String codEmp) throws PadraoException, IOException {
+	public FPW_Quantitativo(String database, String codEmp, ConexaoDiretaBanco con) throws PadraoException, IOException {
 
 		this.returnList = new ArrayList<HashMap<String, Object>>();
-		this.con = new ConexaoDiretaBanco();
+		this.con = con;
 		this.database = database;
 		this.codEmp = codEmp;
 		this.allSQL = new StringBuilder();

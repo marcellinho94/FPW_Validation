@@ -1,10 +1,6 @@
 package br.com.lg.smb.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -25,46 +21,28 @@ public class ConexaoDiretaBanco {
 	private String strConexao;
 	private Connection conexao;
 
-	@SuppressWarnings("resource")
-	public ConexaoDiretaBanco() throws PadraoException, IOException {
+	public ConexaoDiretaBanco(String server, String database, String user, String password, String door) throws PadraoException, IOException {
 		super();
 
-		// Buscar dentro da Pasta ArquivosConfiguracao o arquivo Config.ini
-		// !!!!!! IMPORTANTE !!!!!!!!
-		// A ordem dos dados deve seguir o padrão:
-		// servidor|banco|user|password
-		String diretorio = Utilitario.diretorioLocal() + File.separator + "config.ini";
+		usuario = user;
+		senha = password;
+		String instance = "";
 
-		FileReader arq = new FileReader(diretorio, Charset.forName("UTF-8"));
-		BufferedReader lerArq = new BufferedReader(arq);
-		String linha = lerArq.readLine();
-
-		if (linha == null) {
-			throw new PadraoException(new MsgRetorno("Parâmetros não configurados.", MsgRetorno.RETORNO_ERRO));
+		if (Utilitario.StringNullOuVaziaComTrim(door)) {
+			door = "1433";
 		}
 
-		String[] split = linha.split("\\|", -1);
+		if (Utilitario.StringNullOuVaziaComTrim(server) || Utilitario.StringNullOuVaziaComTrim(database) || Utilitario.StringNullOuVaziaComTrim(usuario)
+				|| Utilitario.StringNullOuVaziaComTrim(senha) || Utilitario.StringNullOuVaziaComTrim(door)) {
 
-		// Atribuindo as variaveis os dados
-		String servidor = split[0];
-		String banco = split[1];
-		usuario = split[2];
-		senha = split[3];
-		String porta = "1433";
-		String instancia = null;
-
-		if (Utilitario.StringNullOuVaziaComTrim(servidor) || Utilitario.StringNullOuVaziaComTrim(banco)
-				|| Utilitario.StringNullOuVaziaComTrim(usuario) || Utilitario.StringNullOuVaziaComTrim(senha)
-				|| Utilitario.StringNullOuVaziaComTrim(porta)) {
-
-			MsgRetorno m = new MsgRetorno("Parâmetros do servidor não configurados.", MsgRetorno.RETORNO_ALERTA);
+			MsgRetorno m = new MsgRetorno("Parametros do servidor não configurados.", MsgRetorno.RETORNO_ALERTA);
 			throw new PadraoException(m);
 		}
 
-		strConexao = "jdbc:jtds:sqlserver://" + servidor + ":" + porta + "/" + banco;
+		strConexao = "jdbc:jtds:sqlserver://" + server + ":" + door + "/" + database;
 
-		if (!Utilitario.StringNullOuVaziaComTrim(instancia)) {
-			strConexao += ";instance=" + instancia;
+		if (!Utilitario.StringNullOuVaziaComTrim(instance)) {
+			strConexao += ";instance=" + instance;
 		}
 	}
 
@@ -164,7 +142,7 @@ public class ConexaoDiretaBanco {
 			if (conectarDesconectarAutomatico) {
 				conectar();
 			} else {
-				MsgRetorno m = new MsgRetorno("Não conectado.", MsgRetorno.RETORNO_ALERTA);
+				MsgRetorno m = new MsgRetorno("NÃ£o conectado.", MsgRetorno.RETORNO_ALERTA);
 				throw new PadraoException(m);
 			}
 		}
@@ -183,5 +161,4 @@ public class ConexaoDiretaBanco {
 			throw new PadraoException(e);
 		}
 	}
-
 }

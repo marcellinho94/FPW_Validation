@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.com.lg.smb.exception.PadraoException;
+import br.com.lg.smb.utils.ConexaoDiretaBanco;
 import br.com.lg.smb.utils.Utilitario;
 
 public class FPW {
@@ -17,17 +18,19 @@ public class FPW {
 			String databaseName = "ORIGEM_MAZARS";
 			String codEmp = "";
 
-			qualitativo(databaseName, codEmp);
+			ConexaoDiretaBanco con = new ConexaoDiretaBanco(codEmp, databaseName, databaseName, codEmp, null);
+
+			qualitativo(databaseName, codEmp, con);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void qualitativo(String databaseName, String codEmp) throws PadraoException, IOException {
+	public static void qualitativo(String databaseName, String codEmp, ConexaoDiretaBanco con) throws PadraoException, IOException {
 
 		// Executing the query
-		FPW_Quantitativo qtd = new FPW_Quantitativo(databaseName, codEmp);
+		FPW_Quantitativo qtd = new FPW_Quantitativo(databaseName, codEmp, con);
 		List<HashMap<String, Object>> countTables = qtd.getCountTables();
 		String sql = qtd.getSQL();
 

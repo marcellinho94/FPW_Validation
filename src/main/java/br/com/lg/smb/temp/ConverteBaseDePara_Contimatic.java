@@ -1,4 +1,4 @@
-package br.com.lg.smb;
+package br.com.lg.smb.temp;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -119,11 +119,22 @@ public class ConverteBaseDePara_Contimatic {
 					sb.append("	/* --------------------------------------------------- */\n");
 					sb.append("FROM\n");
 					sb.append("	TABELA fic\n");
+					
+					if (folha.equals("1") || folha.equals("5")) {
+						sb.append("	INNER JOIN func fun ON fun.FuncID = fic.Func AND fun.zSysEmpId = fic.zSysEmpId\n");
+					}
+					
 					sb.append("WHERE\n");
 					sb.append("	fic.CAMPO IS NOT NULL\n");
 					sb.append("	AND fic.CAMPO > 0\n");
 					sb.append("	AND CONCAT(TRIM(fic.Ano), RIGHT(CONCAT('0', fic.Mes), 2)) >= @REFINICIAL\n");
 					sb.append("	AND CONCAT(TRIM(fic.Ano), RIGHT(CONCAT('0', fic.Mes), 2)) <= @REFFINAL\n");
+					
+					if (folha.equals("5")) {
+						sb.append("	AND REPLACE(LEFT(fun.DataRescisao, 7), '-', '') = CONCAT(TRIM(FIC.Ano), RIGHT(CONCAT('0', FIC.Mes), 2))\n");
+					} else if (folha.equals("1")) {
+						sb.append("	AND REPLACE(LEFT(fun.DataRescisao, 7), '-', '') <> CONCAT(TRIM(FIC.Ano), RIGHT(CONCAT('0', FIC.Mes), 2))\n");
+					}
 
 					if (mat) {
 						sb.append("	AND (SELECT\n");

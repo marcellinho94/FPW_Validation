@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane maxHeight="500.0" maxWidth="600.0" prefHeight="500.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="20.0" layoutY="100.0" text="Endereço" />
+            <TextField fx:id="txtServer" layoutX="20.0" layoutY="120.0" prefHeight="25.0" prefWidth="270.0" />
+            <Label layoutX="20.0" layoutY="160.0" text="Usuário" />
+            <TextField fx:id="txtUser" layoutX="20.0" layoutY="180.0" prefWidth="270.0" />
+            <Label layoutX="310.0" layoutY="160.0" text="Senha" />
+            <PasswordField fx:id="pswPassword" layoutX="310.0" layoutY="180.0" prefWidth="270.0" />
+            <Button fx:id="btnConnection" layoutX="260.0" layoutY="220.0" mnemonicParsing="false" onAction="#connect" prefHeight="30.0" prefWidth="82.0" text="Conectar" />
+            <Separator layoutX="20.0" layoutY="85.0" prefHeight="0.0" prefWidth="560.0" />
+            <ChoiceBox layoutX="20.0" layoutY="40.0" prefHeight="25.0" prefWidth="560.0" />
+            <Label layoutX="20.0" layoutY="20.0" text="Servidor" />
+            <Label layoutX="310.0" layoutY="100.0" text="Porta" />
+            <PasswordField fx:id="pswPassword1" layoutX="310.0" layoutY="120.0" prefWidth="270.0" />
+            <Separator layoutX="20.0" layoutY="265.0" prefHeight="0.0" prefWidth="560.0" />
+            <ChoiceBox layoutX="20.0" layoutY="300.0" prefHeight="25.0" prefWidth="560.0" />
+            <Label layoutX="20.0" layoutY="280.0" text="Banco de Dados" />
+            <CheckBox layoutX="20.0" layoutY="345.0" mnemonicParsing="false" text="Rel. de Empresas" />
+            <CheckBox layoutX="257.0" layoutY="345.0" mnemonicParsing="false" text="Quantitativo" />
+            <CheckBox layoutX="499.0" layoutY="345.0" mnemonicParsing="false" text="Qualitativo" />
+            <Label layoutX="20.0" layoutY="380.0" text="Filtrar Empresas (informe o cód separado por virgula)" />
+            <TextField fx:id="txtServer1" layoutX="20.0" layoutY="400.0" prefHeight="25.0" prefWidth="560.0" />
+            <Button fx:id="btnConnection1" layoutX="251.0" layoutY="440.0" mnemonicParsing="false" onAction="#connect" prefHeight="30.0" prefWidth="100.0" text="Gerar Arquivos" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
